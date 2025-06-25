@@ -20,6 +20,12 @@ const dbConfig = {
   database: process.env.DB_NAME,
 };
 
+require('dotenv').config();
+const pool = mysql.createPool(dbConfig); // pool em vez de conexões soltas
+
+async function getConnection() {
+  return pool.getConnection();
+}
 
 // Cria conexão com banco
 async function getConnection() {
