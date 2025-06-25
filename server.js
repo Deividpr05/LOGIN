@@ -13,11 +13,13 @@ const SECRET = 'sua_chave_secreta_aqui'; // Guarda isso em variáveis de ambient
 
 // Configuração do banco MySQL - ajusta conforme teu ambiente
 const dbConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: '03112010',
-  database: 'login_db',
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT, // coloca também!
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 };
+
 
 // Cria conexão com banco
 async function getConnection() {
