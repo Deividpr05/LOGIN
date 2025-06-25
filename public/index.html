@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login e Cadastro</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    .input-style {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      color: white;
+    }
+    .input-style:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-sm card text-white">
+    <h2 class="text-2xl font-bold text-center mb-4" id="formTitle">Login</h2>
+    <form id="userForm" class="space-y-4">
+      <input type="text" id="username" class="w-full input-style" placeholder="Usuário" required />
+      <input type="password" id="password" class="w-full input-style" placeholder="Senha" required />
+      <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 py-2 rounded font-semibold">Entrar</button>
+    </form>
+    <p class="text-center mt-4">
+      <span id="toggleText">Não tem uma conta?</span>
+      <button id="toggleBtn" class="text-indigo-300 hover:underline">Cadastre-se</button>
+    </p>
+  </div>
+
+  <script>
+    const isLogin = { value: true };
+    const formTitle = document.getElementById("formTitle");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const toggleText = document.getElementById("toggleText");
+    const userForm = document.getElementById("userForm");
+
+    toggleBtn.addEventListener("click", () => {
+      isLogin.value = !isLogin.value;
+      formTitle.textContent = isLogin.value ? "Login" : "Cadastro";
+      toggleText.textContent = isLogin.value ? "Não tem uma conta?" : "Já tem uma conta?";
+      toggleBtn.textContent = isLogin.value ? "Cadastre-se" : "Entrar";
+    });
+
+    userForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const endpoint = isLogin.value ? "/login" : "/register";
+
+      const response = await fetch(`http://localhost:3000${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message);
+        if (isLogin.value) {
+          localStorage.setItem("token", result.token);
+          window.location.href = "profile.html";
+        } else {
+          isLogin.value = true;
+          formTitle.textContent = "Login";
+          toggleText.textContent = "Não tem uma conta?";
+          toggleBtn.textContent = "Cadastre-se";
+        }
+      } else {
+        alert(result.message);
+      }
+    });
+  </script>
+</body>
+</html>

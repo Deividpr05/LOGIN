@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #141e30, #243b55);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    .input-style {
+      background-color: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      color: white;
+    }
+    .input-style:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-sm card text-white">
+    <h2 class="text-2xl font-bold text-center mb-4">Cadastro</h2>
+    <form id="registerForm" class="space-y-4">
+      <input type="text" id="username" class="w-full input-style" placeholder="Usuário" required />
+      <input type="password" id="password" class="w-full input-style" placeholder="Senha" required />
+      <button type="submit" class="w-full bg-green-500 hover:bg-green-600 py-2 rounded font-semibold">Cadastrar</button>
+    </form>
+    <p class="text-center mt-4">
+      <a href="index.html" class="text-green-300 hover:underline">Já tem uma conta? Faça login</a>
+    </p>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message);
+        window.location.href = "index.html";
+      } else {
+        alert(result.message);
+      }
+    });
+  </script>
+</body>
+</html>

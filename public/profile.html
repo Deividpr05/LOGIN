@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baú do Tesouro</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('https://i.imgur.com/AC3bP7Z.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay flex flex-col items-center justify-center text-white p-8">
+    <h1 class="text-4xl font-bold mb-4">🏴‍☠️ Tesouro Encontrado!</h1>
+    <p class="text-lg mb-6 text-center max-w-md">
+      Parabéns, marinheiro! Você acessou a área secreta do tesouro. Aqui estão guardados os segredos mais valiosos da tripulação.
+    </p>
+    <img src="https://i.imgur.com/8l0aThQ.png" alt="Baú do Tesouro" class="w-64 h-64 mb-6">
+    <button onclick="logout()" class="bg-red-500 hover:bg-red-700 px-6 py-2 rounded font-semibold">Sair</button>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    // proteção: redireciona se não tiver token
+    if (!localStorage.getItem("token")) {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
